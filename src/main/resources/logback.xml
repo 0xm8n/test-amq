@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <!-- use Spring default values -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <appender name="Console_Appender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5p) [%clr(%-50(%X{camel.breadcrumbId:-initializationPhase})){cyan}] %-30.30c{1} - %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="Message_Log_Appender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5p) [%clr(%-50(%X{camel.breadcrumbId:-initializationPhase})){cyan}] %-30.30c{1} - %clr(%marker){magenta}%n</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="local | dev | sit">
+        <!-- [Test Only]JPA Statistic -->
+        <logger name="org.hibernate.engine.internal.StatisticalLoggingSessionEventListener" level="info"/>
+        <!-- [Test Only]Show SQL -->
+        <logger name="org.hibernate.SQL" level="debug"/>
+    </springProfile>
+
+    <springProfile name="!prd">
+        <!-- MBIX API -->
+        <logger name="com.mbixtech" level="debug"/>
+        <!-- MBIX API Message Log -->
+        <logger name="com.mbixtech.log.msg" additivity="false" level="debug">
+            <appender-ref ref="Message_Log_Appender" />
+        </logger>
+    </springProfile>
+    <springProfile name="prd">
+        <!-- MBIX API -->
+        <logger name="com.mbixtech" level="info"/>
+        <!-- MBIX API Message Log -->
+        <logger name="com.mbixtech.log.msg" additivity="false" level="info">
+            <appender-ref ref="Message_Log_Appender" />
+        </logger>
+    </springProfile>
+
+    <!-- Root Logger -->
+    <root level="info">
+        <appender-ref ref="Console_Appender" />
+    </root>
+</configuration>

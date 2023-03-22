@@ -1,0 +1,63 @@
+# Force ANSI color output for Windows env
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+
+# Generic config
+server:
+  # Change embedded port to 8181 to avoid port conflict with Camel REST component
+  port: 8080
+endpoints:
+  # disable all management endpoints except health
+  enabled: false
+  health:
+    enabled: true
+management:
+  health:
+    defaults:
+      enabled: false
+      
+# Camel Config
+camel:
+  health:
+    enabled: false
+    indicator:
+      enabled: true
+  component:
+    http4:
+      socket-timeout: 2000
+    servlet:
+      mapping:
+        contextPath: /v${mbix.api.version}/*
+
+# mbix Custom Config
+mbix:
+  api:
+    version: 1
+
+  truststore:
+    trustStoreFile: "/truststore/truststore.jks"
+    trustStorePassword: fogetit
+
+  loop-param:
+#    option: "?delay=5s&period=5s&repeatCount=4"
+    push-option: "?delay=5s&period=60s"
+    pull-option: "?delay=5s&period=90s"
+    push-count: 30
+    pull-count: 25
+    last-msg-expired: 12000000 # Expired time of last message in milli-sec, default 45 min
+
+  # Ampq connection configuration
+  activemq:
+    queue-name: test-amq
+    get-timeout: 2000
+
+  amqp:
+#    username: ${OCP_SPRING_AMQ_USER}
+#    password: ${OCP_SPRING_AMQ_PASSWORD}
+    username: user1
+    password: gxHoxd9b
+#    host: apiamq-amqp-svc.mbix-dev.svc.cluster.local
+    host: localhost
+    port: 5672

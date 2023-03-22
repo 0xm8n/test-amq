@@ -1,0 +1,18 @@
+# Startup configuration of Spring-cloud-kubernetes
+spring:
+  application:
+    name: test-amq
+  cloud:
+    kubernetes:
+      reload:
+        # Disabled live reload on ConfigMap change (disabled for Secrets by default)
+        enabled: false
+#      secrets:
+#        paths: /etc/secrets/test-amq
+#    # Spring Cloud Config
+#    config:
+#      #      uri: https://config-server-mbix-dev.api-internal-test.mbix.or.th
+#      uri: http://notused:1111
+#      username: ${OCP_SPRING_CONFIG_USERNAME}
+#      password: ${OCP_SPRING_CONFIG_PASSWORD}
+#      fail-fast: false
